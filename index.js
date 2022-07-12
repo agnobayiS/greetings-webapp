@@ -60,7 +60,9 @@ res.render('actions',{
 });
 
 app.get('/actions/:type', function (req, res) {
-
+    res.render('actions',{
+        actions: settingsBill.actionsFor(req.params.type)
+    });
 
 });
 
