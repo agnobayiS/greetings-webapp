@@ -89,7 +89,7 @@ module.exports = function SettingsBill() {
 
 
         }
-        return total;
+        return total
 
         // the short way using reduce and arrow functions
 
@@ -104,12 +104,12 @@ module.exports = function SettingsBill() {
     }
 
     function totals() {
-        let smsTotal = getTotal('sms')
-        let callTotal = getTotal('call')
+        let smsTotal = getTotal('sms').toFixed(2)
+        let callTotal = getTotal('call').toFixed(2)
         return {
             smsTotal,
             callTotal,
-            grandTotal: grandTotal()
+            grandTotal: grandTotal().toFixed(2)
         }
     }
 
