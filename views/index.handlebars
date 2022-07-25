@@ -1,85 +1,85 @@
-<div class="row">
+<body style="background-color: rgb(228, 220, 220);">
+    <div style="background-color: gray; width: 800px;margin: 60px auto;">
+        <div class="container" style="height: 15px;">
+            <div class="row">
 
-  <div class="twelve columns box">
-    <h3>Bill with settings</h3>
-    <div class="">
-      Select the call or sms radio button. Update the appropriate total and the overall total when the ADD button in
-      pressed.
-      <i>Calls costs should now be configurable using the settings section.</i>
-    </div>
-    <div class="">
-      <i>If the total cost exceed the warning level show the total cost in orange, if it exceeds the critical level show
-        it in red and prevent any new costs from being added. The warning and critical level should both be configurable
-        now.</i>
-    </div>
+                <div class="col-6">
+                    <h1 class="title" style="padding-left: 40px; paddind-bottom:30px;"> GREETING</h1>
+                </div>
+            </div>
+        </div>
 
-    <hr>
+        <div class="container">
+            <div class="row">
 
-    <div class="row">
+                <div class="col-12 addBtn" style="height:15px">
+                    <table class="alet">
+                        <tr>
+                            {{!-- <td class="errorTxt" style="color: darkred;">{{messages.info}}</td> --}}
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form action="/greeting" method="post" class="input-class">
 
-      <div class="six columns">
-        <h5>Bill type</h5>
-        <form action="/action" method="POST">
+            <div class="container">
+                <div class="row">
 
-          <label class="">
-            <input type="radio"  name="actionType" value="call" class="billItemTypeWithSettings">
-            <span class="label-body">Call</span>
-          </label>
-          <label class="">
-            <input type="radio"  name="actionType" value="sms" class="billItemTypeWithSettings">
-            <span class="label-body">SMS</span>
-          </label>
-          <button class="button-primary" type="submit" name="button">Add</button>
+                    <div class="col-6 name-input" style="display: flex; align-items: center; padding-left: 40px; ">
+                        <h3 style="padding-right: 10px;">NAME</h1>
+                            <input class="textBox" name="username" style="padding-left: 20px; height: 30px;" type="text"
+                                placeholder="Enter name" />
+                            <div style="padding-left: 30px;">{{counter}}</div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="container">
+                <div class="row">
 
-        </form>
-        <h5>Totals</h5>
-        <table>
-          <tr>
-            <td>
-              <a href="/actions/call">Call total</a>
-            </td>
-            <td>R<span class="callTotalSettings">{{totals.callTotal}}</span> </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="/actions/sms">SMS total</a>
-            </td>
-            <td>R<span class="smsTotalSettings">{{totals.smsTotal}}</span> </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="/actions">Total</a>
-            </td>
-            <td> R<span class="totalSettings {{totaClassName}}">{{totals.grandTotal}}</span> </td>
-          </tr>
-        </table>
-
-      </div>
-      <div class="six columns">
-        <h5>Settings</h5>
-
-        <form action="/settings" method="POST">
-
-          <label for="exampleEmailInput">Call cost</label>
-          <input class="u-full-width callCostSetting" type="number" step=".01" name="callCost" placeholder="eg. 2.55"
-            value="{{setting.callCost}}">
-          <label for="exampleEmailInput">SMS cost</label>
-          <input class="u-full-width smsCostSetting" type="number" step=".01" name="smsCost" placeholder="eg. 0.65"
-            value="{{setting.smsCost}}">
-          <label for="">Warning level</label>
-          <input class="u-full-width warningLevelSetting " type="number" step=".01" name="warningLevel"
-            placeholder="eg. 30.00" class="warningLevel" value="{{setting.warningLevel}}">
-          <label for="">Critical level</label>
-          <input class="u-full-width criticalLevelSetting" type="number" step=".01" name="criticalLevel"
-            placeholder="eg. 65.00" value="{{setting.criticalLevel}}">
-          <button class="button-primary updateSettings" type="submit" name="button">Update settings</button>
+                    <div class="col-6 radioBtn" style="display: flex; align-items: center; padding-left:40px; ">
 
 
+                        <P style="color: white;">ENGLISH</P>
+                        <input class="radio" name="btn" type="radio" value="english" />
+
+
+                        <P style="color: white; padding-left: 30px;">ISIXHOSA</P>
+                        <input class="radio" name="btn" type="radio" value="isixhosa" />
+
+                        <P style="color: white; padding-left: 30px">AFRIKAANS</P>
+                        <input class="radio" name="btn" type="radio" value="afrikaans" />
+                    </div>
+                </div>
+            </div>
+            <div class="containe " style="padding-left:40px; padding-right: 10px;">
+                <div class="row">
+
+                    <div>
+                        <h1 class="TheGreeting greetText reject" id="msg" style="color: yellow;">{{validateName}}</h1>
+                    </div>{{#if messages.info}}
+                    <div class="entry" style="color: darkred;" >
+                        <h1> {{messages.info}}</h1>
+                    </div>{{/if}}
+                    <div class="col addBtn btn" style="padding-top: 30px;">
+                        <button class="greetBtn" type="submit" name="button" style="width: max-content;">GREET
+                            ME</button>
+                        <a href="/counter"><button class="restBtn" type="button"> NAMES</button></a>
+                        <a href="/clear"><button class="restBtn" type="button" name="button1"
+                                style="height: 26px; margin-left: 10px;">RESET</button></a>
+
+
+                    </div>
+                </div>
+            </div>
         </form>
 
 
-      </div>
     </div>
-  </div>
-</div>
+
+
+<script src="timeout.js"></script>
+</body>
+
+</html>

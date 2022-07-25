@@ -1,74 +1,123 @@
 const express = require('express');
-const exphbs  = require('express-handlebars');
+const flash = require('express-flash');
+const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser')
-const SettingsBill = require('./testing-DOM');
+const session = require('express-session');
+const greet = require('./greet-function')([]);
 
 const app = express();
+var alphabets = /^[a-zA-Z]+$/g;
 
-const settingsBill = SettingsBill();
 
-
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 app.use(express.static("public"))
 
+
+app.use(session({
+    secret: "<add a secret string here>",
+    resave: false,
+    saveUninitialized: true
+}));
+
+// initialise the flash middleware
+app.use(flash());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
- 
 
 
-app.get('/' ,function (req, res) {
-    res.render('index',{
-        setting:settingsBill.getSettings(),
-        totals: settingsBill.totals(),
-        totaClassName: settingsBill.totaClassName()
+app.use(
+    session({
+        secret: 'secret',
+        resave: false,
+        saveUninitialized: true,
+
+
     })
+);
 
-});
 
-app.post('/settings', function (req, res) {
 
-    
-    settingsBill.setSettings({
-        callCost:req.body.callCost,
-        smsCost:req.body.smsCost,
-        warningLevel:req.body.warningLevel,
-        criticalLevel:req.body.criticalLevel
+app.get('/', function (req, res) {
+
+
+    let counter = greet.counter()
+    console.log(counter);
+    res.render('index', {
+        counter
+
     })
-     
-    res.redirect('/')
+});
+
+app.post('/greeting', function (req, res) {
+    let name = req.body.username
+    let language = req.body.btn
+
+    console.log("Checking name:", counter);
+
+    if (!name || !language) {
+        req.flash('info', greet.validateInput(name, language));
+        res.redirect('/');
+
+    }
+
+
+
+
+    if (name && language) {
+        var validateName = greet.greetName(name, language);
+        console.log("validate things:", validateName);
+        var counter = greet.counter()
+        // var msg = greet.velidName(req.body.username, req.body.btn);
+    }
+
+    // else if (alphabets.test(name)) {
+    //     console.log("mememe")
+    //     var validateName = greet.regexName(name)
+
+    // }
+
+    res.render('index', { validateName, counter })
+
 
 });
 
-app.post('/action' ,function (req, res) {
-
-    settingsBill.recordAction(req.body.actionType);
+app.get('/counter', function (req, res) {
 
 
-    res.redirect('/')
-
-});
-
-app.get('/actions' ,function (req, res) {
-res.render('actions',{
-    actions: settingsBill.actions()
-});
+    let names = greet.getNames()
+    console.log(names);
+    res.render('names', { names })
 
 });
 
-app.get('/actions/:type', function (req, res) {
-    res.render('actions',{
-        actions: settingsBill.actionsFor(req.params.type)
+
+
+app.get('/counter/:name', function (req, res) {
+    var user = req.params.name
+    let names = greet.getNames()
+    for (const name in names) {
+        console.log(name);
+        if (name === user) {
+            var number = names[name];
+            var message = `Hello ${user} you have been greeted ${number} times`;
+        }
+    }
+    res.render('counter', {
+        message
     });
-
 });
 
-const PORT = process.env.PORT || 3019 ;
+app.get('/clear', function (req, res) {
+    greet.clear()
+    res.redirect('/')
+})
 
-app.listen(PORT,function(){
-    console.log("App started at port:",PORT)
+const PORT = process.env.PORT || 3030;
+
+app.listen(PORT, function () {
+    console.log("App started at port:", PORT)
 });
-

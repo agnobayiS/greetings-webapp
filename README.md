@@ -1,1 +1,0 @@
-[![Node.js CI](https://github.com/agnobayiS/settings-bill-expressjs/actions/workflows/node.js.yml/badge.svg)](https://github.com/agnobayiS/settings-bill-expressjs/actions/workflows/node.js.yml)

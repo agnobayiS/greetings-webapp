@@ -1,0 +1,43 @@
+.title{
+    text-align: center;
+}
+.name-input{
+    display: flex;
+    align-items: center;
+
+}
+.radioBtn{
+    display: flex;
+    align-items: center;
+}
+.addBtn{
+    display: flex;
+}
+.TheGreeting{
+    padding-left: 40px;
+}
+.greetText{
+    color: greenyellow;
+}
+.count{
+    display: flex;
+    align-items: center;
+    
+}
+.reject{
+    color:orange;
+    font:bold;
+    font-size: larger;
+}
+.me{
+    display:flex
+
+}
+.btn{
+display: flex;
+align-items: center;
+justify-content: center;
+
+
+}
+
