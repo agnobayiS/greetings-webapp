@@ -71,14 +71,10 @@ app.post('/greeting', function (req, res) {
         var validateName = greet.greetName(name, language);
         console.log("validate things:", validateName);
         var counter = greet.counter()
-        // var msg = greet.velidName(req.body.username, req.body.btn);
+        
     }
 
-    // else if (alphabets.test(name)) {
-    //     console.log("mememe")
-    //     var validateName = greet.regexName(name)
-
-    // }
+  
 
     res.render('index', { validateName, counter })
 
