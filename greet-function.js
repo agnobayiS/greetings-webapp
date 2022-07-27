@@ -3,9 +3,11 @@ const moment = require('moment')
 moment().format();
 module.exports = function greeting() {
 
+    var name = ""
+    var language = ""
     
     var greetedNames = {}
-    var alphabets = /^[a-zA-Z]{3,}$/g;
+    var alphabets = /^[a-zA-Z]{3,}$/;
 
     function validateInput(name, language) {
         let names =  alphabets.test(name)
@@ -27,16 +29,32 @@ module.exports = function greeting() {
 
 
     }
-   
+
+    function setName (userName){
+        name = userName 
+    }
+    function getName (){
+        return name
+    }
+    function setLanguage (languageSelected){
+        language = languageSelected 
+    }
+    function getlanguage (){
+        return language
+    }
 
     function greetName(name, language) {
 
+        console.log(greetedNames);
         if (greetedNames[name] === undefined) {
             greetedNames[name] = 1;
         }
         else {
             greetedNames[name]++
         }
+
+        setName("")
+        setLanguage("")
 
         switch (language) {
             case "english":
@@ -73,7 +91,10 @@ module.exports = function greeting() {
 
 
     return {
-        // regexName,
+        getlanguage,
+        setLanguage,
+        getName,
+        setName,
         getNames,
         clear,
         validateInput,

@@ -3,6 +3,7 @@ const flash = require('express-flash');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser')
 const session = require('express-session');
+const greetFunction = require('./greet-function');
 const greet = require('./greet-function')([]);
 
 const app = express();
@@ -43,12 +44,19 @@ app.use(
 
 app.get('/', function (req, res) {
 
+    let name = greet.getName()
+    let language = greet.getlanguage()
 
+    if(name !== ''){
+        var validateName = greet.greetName(name, language);
+    }
     let counter = greet.counter()
+    
     console.log(counter);
     res.render('index', {
+        validateName,
         counter
-
+        
     })
 });
 
@@ -56,28 +64,31 @@ app.post('/greeting', function (req, res) {
     let name = req.body.username
     let language = req.body.btn
 
-    console.log("Checking name:", counter);
+    // console.log("Checking name:", counter);
 
     if (!name || !language) {
         req.flash('info', greet.validateInput(name, language));
-        res.redirect('/');
-
-    }
-
-
-
-
-    if (name && language) {
-        var validateName = greet.greetName(name, language);
-        console.log("validate things:", validateName);
-        var counter = greet.counter()
         
+
+    }else{
+        greet.setName(name)
+        greet.setLanguage(language)
     }
+
+
+
+
+    // if (name && language) {
+    //     var validateName = greet.greetName(name, language);
+    //     console.log("validate things:", validateName);
+    //     var counter = greet.counter()
+        
+    // }
 
   
 
-    res.render('index', { validateName, counter })
-
+    // res.render('index', { validateName, counter })
+    res.redirect('/');
 
 });
 
