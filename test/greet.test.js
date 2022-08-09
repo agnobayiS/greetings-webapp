@@ -6,7 +6,7 @@ const greeting = require('../greet-function');
 
 describe("The Greeting massages",function(){
 
-    it("should display (Hello and name) if the name is passed in and the lanuge is english",function(){
+    it("should display (Hello, name) if the name is passed in and the lanuge is english",function(){
 
         const passedNames = greeting()
         assert.equal("Hello Siyabonga",passedNames.greetName("Siyabonga","english") )
@@ -15,7 +15,7 @@ describe("The Greeting massages",function(){
 
 
     });
-    it("should display (mholo and name) if the name is passed in and the lanuge is xhosa",function(){
+    it("should display (Mholo, name) if the name is passed in and the lanuge is xhosa",function(){
 
         const passedNames = greeting()
         assert.equal("Mholo Aphiwe",passedNames.greetName("Aphiwe","isixhosa") )
@@ -24,7 +24,7 @@ describe("The Greeting massages",function(){
 
 
     });
-    it("should display (Hallo and name) if the name is passed in and the lanuge is afrikaans",function(){
+    it("should display (Hallo, name) if the name is passed in and the lanuge is afrikaans",function(){
 
         const passedNames = greeting()
         assert.equal("Hallo Siyabonga",passedNames.greetName("Siyabonga","afrikaans") )

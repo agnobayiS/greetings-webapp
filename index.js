@@ -4,8 +4,19 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser')
 const session = require('express-session');
 const greetFunction = require('./greet-function');
-const greet = require('./greet-function')([]);
 
+// conecting database and js
+
+const pgp = require('pg-promise')({});
+
+const local_database_url = 'postgres://siyabonga:siya@localhost:5432/my_greet';
+const connectionString = process.env.DATABASE_URL || local_database_url;
+
+const db = pgp(connectionString);
+
+// conecting database and js
+
+const greet = require('./greet-function')(db);
 const app = express();
 var alphabets = /^[a-zA-Z]+$/g;
 
@@ -21,12 +32,12 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// initialise the flash middleware
+
 app.use(flash());
 
-// parse application/x-www-form-urlencoded
+
 app.use(bodyParser.urlencoded({ extended: false }))
-// parse application/json
+
 app.use(bodyParser.json())
 
 
@@ -42,60 +53,48 @@ app.use(
 
 
 
-app.get('/', function (req, res) {
+app.get('/', async function (req, res) {
 
     let name = greet.getName()
     let language = greet.getlanguage()
 
-    if(name !== ''){
-        var validateName = greet.greetName(name, language);
+    if (name !== '') {
+        var validateName = await greet.greetName(name, language);
     }
-    let counter = greet.counter()
-    
+    let counter = await greet.counter()
+
     console.log(counter);
     res.render('index', {
         validateName,
         counter
-        
+
     })
+    // INSERT INTO my_greet (GREETED_NAMES, COUNTER,) 
 });
 
 app.post('/greeting', function (req, res) {
     let name = req.body.username
     let language = req.body.btn
 
-    // console.log("Checking name:", counter);
+
 
     if (!name || !language) {
         req.flash('info', greet.validateInput(name, language));
-        
 
-    }else{
+
+    } else {
         greet.setName(name)
         greet.setLanguage(language)
     }
 
-
-
-
-    // if (name && language) {
-    //     var validateName = greet.greetName(name, language);
-    //     console.log("validate things:", validateName);
-    //     var counter = greet.counter()
-        
-    // }
-
-  
-
-    // res.render('index', { validateName, counter })
     res.redirect('/');
 
 });
 
-app.get('/counter', function (req, res) {
+app.get('/counter', async function (req, res) {
 
 
-    let names = greet.getNames()
+    let names = await greet.getNames()
     console.log(names);
     res.render('names', { names })
 
@@ -103,23 +102,26 @@ app.get('/counter', function (req, res) {
 
 
 
-app.get('/counter/:name', function (req, res) {
+app.get('/counter/:name', async function (req, res) {
+   try {
     var user = req.params.name
-    let names = greet.getNames()
-    for (const name in names) {
-        console.log(name);
-        if (name === user) {
-            var number = names[name];
-            var message = `Hello ${user} you have been greeted ${number} times`;
-        }
-    }
+    let number = await greet.userCounter(user)
+    console.log(number);
+    console.log('------------------');
+    var message = `Hello ${user} you have been greeted ${number} times`;
     res.render('counter', {
         message
     });
+   } catch (error) {
+    console.log(error);
+   }
 });
 
-app.get('/clear', function (req, res) {
-    greet.clear()
+app.get('/clear', async function (req, res) {
+    await greet.clear()
+    req.flash('info', "names cleared!");
+
+
     res.redirect('/')
 })
 

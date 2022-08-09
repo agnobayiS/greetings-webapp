@@ -4,8 +4,8 @@
     <div style="text-align: center;"> 
         
         {{#each names}}
-        <a href="/counter/{{@key}}">
-            <p>{{@key}}</p>
+        <a href="/counter/{{this.greeted_names}}">
+            <p>{{this.greeted_names}}</p>
         </a>
         {{/each}}
     </div>
