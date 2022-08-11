@@ -69,7 +69,6 @@ app.get('/', async function (req, res) {
         counter
 
     })
-    // INSERT INTO my_greet (GREETED_NAMES, COUNTER,) 
 });
 
 app.post('/greeting', function (req, res) {
@@ -108,7 +107,7 @@ app.get('/counter/:name', async function (req, res) {
     let number = await greet.userCounter(user)
     console.log(number);
     console.log('------------------');
-    var message = `Hello ${user} you have been greeted ${number} times`;
+    var message = `Hello ${user} you have been greeted ${number[counter]} times`;
     res.render('counter', {
         message
     });

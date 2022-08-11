@@ -42,8 +42,10 @@ module.exports = function greeting(db) {
         return language
     }
 
-    async function greetName(name, language) {
+    async function greetName(names, language) {
 
+        const name = names.charAt(0).toUpperCase() + names.slice(1).toLowerCase();
+        
         let check = await db.oneOrNone('select greeted_names from my_greet where greeted_names = $1', [name])
         console.log(check);
         if (check === null) {
@@ -90,6 +92,7 @@ module.exports = function greeting(db) {
 
     async function userCounter(name){
         console.log(name);
+
         let counter = await db.oneOrNone('select counter from my_greet where greeted_names = $1',[name])
         if (counter === null) {
             return
