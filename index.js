@@ -16,9 +16,8 @@ const connectionString = process.env.DATABASE_URL || local_database_url;
 
 // conecting database and js
 
-const greet = require('./greet-function')(db);
 const app = express();
-var alphabets = /^[a-zA-Z]+$/g;
+
 
 const config = {
     connectionString
@@ -30,6 +29,7 @@ if(process.env.NODE_ENV == "production"){
 }
 
 const db = pgp(config);
+const greet = require('./greet-function')(db);
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
