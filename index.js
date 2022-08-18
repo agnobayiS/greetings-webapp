@@ -12,7 +12,7 @@ const pgp = require('pg-promise')({});
 const local_database_url = 'postgres://siyabonga:siya@localhost:5432/my_greet';
 const connectionString = process.env.DATABASE_URL || local_database_url;
 
-const db = pgp(connectionString);
+
 
 // conecting database and js
 
@@ -28,6 +28,8 @@ if(process.env.NODE_ENV == "production"){
         rejectUnauthorized: false
     }
 }
+
+const db = pgp(config);
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
