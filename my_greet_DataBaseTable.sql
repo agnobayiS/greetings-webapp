@@ -1,6 +1,6 @@
 CREATE TABLE my_greet(
 id SERIAL PRIMARY KEY,
-GREETED_NAMES text NOT NULL,
-COUNTER int NOT NULL 
+greeted_names text NOT NULL,
+counter int NOT NULL 
 
 )

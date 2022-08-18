@@ -20,6 +20,14 @@ const greet = require('./greet-function')(db);
 const app = express();
 var alphabets = /^[a-zA-Z]+$/g;
 
+const config = {
+    connectionString
+}
+if(process.env.NODE_ENV == "production"){
+    config.ssl = {
+        rejectUnauthorized: false
+    }
+}
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -94,26 +102,28 @@ app.get('/counter', async function (req, res) {
 
 
     let names = await greet.getNames()
-    console.log(names);
-    res.render('names', { names })
+    
+    res.render('names', { 
+        names 
+    
+    })
 
 });
 
 
 
 app.get('/counter/:name', async function (req, res) {
-   try {
-    var user = req.params.name
+
+    let user = req.params.name
     let number = await greet.userCounter(user)
-    console.log(number);
-    console.log('------------------');
-    var message = `Hello ${user} you have been greeted ${number[counter]} times`;
+
+ 
     res.render('counter', {
-        message
+        user,
+        number
+    
     });
-   } catch (error) {
-    console.log(error);
-   }
+   
 });
 
 app.get('/clear', async function (req, res) {
@@ -124,7 +134,7 @@ app.get('/clear', async function (req, res) {
     res.redirect('/')
 })
 
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 3031;
 
 app.listen(PORT, function () {
     console.log("App started at port:", PORT)

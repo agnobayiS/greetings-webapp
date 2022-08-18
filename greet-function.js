@@ -45,16 +45,16 @@ module.exports = function greeting(db) {
     async function greetName(names, language) {
 
         const name = names.charAt(0).toUpperCase() + names.slice(1).toLowerCase();
-        
+
         let check = await db.oneOrNone('select greeted_names from my_greet where greeted_names = $1', [name])
-        console.log(check);
+        // console.log(check);
         if (check === null) {
             await db.none('insert into my_greet (greeted_names, counter) values ($1, $2)', [name, 1])
         }
         else {
-            db.none('UPDATE my_greet  SET counter = counter + 1 WHERE greeted_names = $1', [name])
+            await db.none('UPDATE my_greet  SET counter = counter + 1 WHERE greeted_names = $1', [name])
         }
-     
+
         setName("")
         setLanguage("")
 
@@ -90,14 +90,12 @@ module.exports = function greeting(db) {
         return count.length
     }
 
-    async function userCounter(name){
-        console.log(name);
+    async function userCounter(name) {
+    
 
-        let counter = await db.oneOrNone('select counter from my_greet where greeted_names = $1',[name])
-        if (counter === null) {
-            return
-        }
-        return counter 
+        let counter = await db.oneOrNone('select greeted_names,counter from my_greet where greeted_names = $1', [name])
+        
+        return counter
     }
 
 
