@@ -5,16 +5,13 @@ const bodyParser = require('body-parser')
 const session = require('express-session');
 const greetFunction = require('./greet-function');
 
-// conecting database and js
+
 
 const pgp = require('pg-promise')({});
 
 const local_database_url = 'postgres://siyabonga:siya@localhost:5432/my_greet';
 const connectionString = process.env.DATABASE_URL || local_database_url;
 
-
-
-// conecting database and js
 
 const app = express();
 

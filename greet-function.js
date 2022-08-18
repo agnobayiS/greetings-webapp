@@ -47,7 +47,7 @@ module.exports = function greeting(db) {
         const name = names.charAt(0).toUpperCase() + names.slice(1).toLowerCase();
 
         let check = await db.oneOrNone('select greeted_names from my_greet where greeted_names = $1', [name])
-        // console.log(check);
+        
         if (check === null) {
             await db.none('insert into my_greet (greeted_names, counter) values ($1, $2)', [name, 1])
         }
