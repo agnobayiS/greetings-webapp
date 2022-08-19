@@ -3,8 +3,8 @@ const flash = require('express-flash');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser')
 const session = require('express-session');
-const greetFunction = require('./greet-function');
-
+const greetFunction = require('./greetings-FF');
+const routes = require('./routs/greet-routs')
 
 
 const pgp = require('pg-promise')({});
@@ -19,14 +19,13 @@ const app = express();
 const config = {
     connectionString
 }
-if(process.env.NODE_ENV == "production"){
+if (process.env.NODE_ENV == "production") {
     config.ssl = {
         rejectUnauthorized: false
     }
 }
 
 const db = pgp(config);
-const greet = require('./greet-function')(db);
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -60,78 +59,22 @@ app.use(
 
 
 
-app.get('/', async function (req, res) {
-
-    let name = greet.getName()
-    let language = greet.getlanguage()
-
-    if (name !== '') {
-        var validateName = await greet.greetName(name, language);
-    }
-    let counter = await greet.counter()
-
-    console.log(counter);
-    res.render('index', {
-        validateName,
-        counter
-
-    })
-});
-
-app.post('/greeting', function (req, res) {
-    let name = req.body.username
-    let language = req.body.btn
+// instance for all js files 
+const greetDb = require('./greet-db-logic')(db);
+const greetings = greetFunction()
+const greetRoute = routes(greetings, greetDb)
 
 
+app.get('/', greetRoute.home);
 
-    if (!name || !language) {
-        req.flash('info', greet.validateInput(name, language));
+app.post('/greeting', greetRoute.greet)
 
+app.get('/counter' ,greetRoute.namesGreeted)
 
-    } else {
-        greet.setName(name)
-        greet.setLanguage(language)
-    }
+app.get('/counter/:name', greetRoute.numberOfTimes)
 
-    res.redirect('/');
+app.get('/clear', greetRoute.clear)
 
-});
-
-app.get('/counter', async function (req, res) {
-
-
-    let names = await greet.getNames()
-    
-    res.render('names', { 
-        names 
-    
-    })
-
-});
-
-
-
-app.get('/counter/:name', async function (req, res) {
-
-    let user = req.params.name
-    let number = await greet.userCounter(user)
-
- 
-    res.render('counter', {
-        user,
-        number
-    
-    });
-   
-});
-
-app.get('/clear', async function (req, res) {
-    await greet.clear()
-    req.flash('info', "names cleared!");
-
-
-    res.redirect('/')
-})
 
 const PORT = process.env.PORT || 3031;
 
